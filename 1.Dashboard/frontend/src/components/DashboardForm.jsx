@@ -54,7 +54,7 @@ const DashboardForm = ({ setTab, form, setForm }) => {
 
   const debouncedCheckDishExists = debounce(async (dishName) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/chef/checkDishExists?name=${dishName.toLowerCase()}`);
+      const response = await axios.get(`http://127.0.0.1:5000/chef/checkDishExists?name=${dishName.toLowerCase()}`);
       if (response.data.exists) {
         setError('Dish already exists');
       } else {
@@ -192,7 +192,7 @@ const DashboardForm = ({ setTab, form, setForm }) => {
       if (form.name.trim()) {
         try {
           setIsLoading(true);
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/chef/checkDishExists?name=${form.name.trim().toLowerCase()}`);
+          const response = await axios.get(`http://127.0.0.1:5000/chef/checkDishExists?name=${form.name.trim().toLowerCase()}`);
           if (response.data.exists) {
             setError('Dish already exists');
           } else {
@@ -377,7 +377,7 @@ const DashboardForm = ({ setTab, form, setForm }) => {
                 <option value="Breakfast">Breakfast</option>
                 <option value="Brunch">Brunch</option>
                 <option value="Desserts">Desserts</option>
-                <option value="Appetizers">Dinner</option>
+                <option value="Dinner">Dinner</option>
                 <option value="Main Course">Main Course</option>
                 <option value="Side Dishes">Side Dishes</option>
                 <option value="Snacks">Snacks</option>

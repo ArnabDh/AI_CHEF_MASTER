@@ -3,8 +3,8 @@ import { Carousel, Button } from "@material-tailwind/react";
 import beans from "../../Images/beans.png";
 import biryani from "../../Images/biryani.png";
 import daal from "../../Images/daal.png";
-import salad from "../../Images/—Pngtree—healthy food_3776802.png";
-import pizza from '../../Images/—Pngtree—modern kitchen food box italian_9047468.png'
+import salad from "../../Images/salad.png";
+import pizza from '../../Images/pizza.png'
 import sambhar from "../../Images/sambhar.png";
 import "../Unique/index.css";
 import "tailwindcss/tailwind.css"; // Import Tailwind CSS first

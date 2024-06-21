@@ -113,7 +113,7 @@ const Application = () => {
       setCount(count + 1);
     }
     if (count === 4) {
-      var formData = new FormData();
+      const formData = new FormData();
       formData.append('appliedFor', selectedJob);
       formData.append('personal', JSON.stringify(personal));
       formData.append('experiences', JSON.stringify(experiences));
@@ -127,8 +127,6 @@ const Application = () => {
       formData.append('allQuestions', JSON.stringify(allQuestions));
       formData.append('voluntaryDisclosures', JSON.stringify(voluntaryDisclosures));
 
-      //formData.append('certificates[]', certificates);
-
       // certificates.map((certificate) => formData.append('certificates[]', certificate));
 
       const config = {
@@ -138,7 +136,7 @@ const Application = () => {
 
       try {
         setCount(5);
-        const response = await fetch('http://127.0.0.1:5000/career', config);  //easter egg 4
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/career`, config);
         const responseData = await response.json();
         if (response.ok) {
           toast.success(responseData["message"]);

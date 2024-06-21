@@ -5,8 +5,8 @@ import ChefImg from "./Data/images/Img10.jpg";
 const NutritionManager = () => {
   return (
     <div className="mb-5">
-        <div style={{ backgroundColor: 'rgba(0, 84, 79, 0.5)' }} className="flex justify-center items-center h-28">
-        <h1 style={{textShadow: '2px 0.5px 0.5px rgba(0, 0, 0, 0.5)'}} className='bg-green-500 text-transparent bg-clip-text text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif py-4 px-6 md:px-8 lg:px-10 xl:px-12 text-center md:text-left'>
+        <div className="flex mb-2 justify-center items-center h-28 mt-2">
+          <h1 style={{ textShadow: '2px 0.5px 0.5px rgba(0, 0, 0, 0.5)' }} className='bg-[#39FF14] text-transparent bg-clip-text text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold font-serif py-4 px-6 md:px-8 lg:px-10 xl:px-12 text-center md:text-left'>
             Nutrition Manager
           </h1>
         </div>

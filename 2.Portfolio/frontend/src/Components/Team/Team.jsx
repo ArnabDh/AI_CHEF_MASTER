@@ -1,6 +1,6 @@
 // Team.jsx
 
-import React from 'react';
+import React from "react";
 import TeamMember from './TeamMember';
 import pp from './PP.jpg';
 import sg from './SG.jpg';

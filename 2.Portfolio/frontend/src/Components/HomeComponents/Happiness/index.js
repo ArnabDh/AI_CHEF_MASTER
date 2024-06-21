@@ -7,7 +7,7 @@ import runAnimation from "../../../lottie/RunAnimation.json";
 
 function Happiness() {
   return (
-    <div className="flex flex-col md:flex-row justify-center break-words items-center px-6 md:px-10  ">
+    <div className="flex flex-col md:flex-row justify-center break-words items-center px-6 md:px-10">
       <div className="sm:text-left lg:w-7/12 sm:w-full md:w-full mb-8 sm:mb-0">
         <Fade left>
           <h1

@@ -12,6 +12,7 @@ import identity.web
 import requests
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+
 load_dotenv()
 from pathlib import Path
 import json
@@ -26,6 +27,9 @@ from flask_mail import Mail, Message
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
+# app.config['CORS_HEADERS'] = 'Content-Type'
+
+# CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.secret_key = os.urandom(12)
@@ -38,7 +42,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 client = MongoClient(os.getenv('MONGODB_URL'))
-#client=MongoClient("mongodb+srv://saurabhpkadam1998:wJly2aakedZ55GlT@aichefmaster.cjcbpyd.mongodb.net/?retryWrites=true&w=majority&appName=AIChefMaster")
+# client=MongoClient("mongodb+srv://saurabhpkadam1998:wJly2aakedZ55GlT@aichefmaster.cjcbpyd.mongodb.net/?retryWrites=true&w=majority&appName=AIChefMaster")
 db = client['AI_Chef_Master']
 
 # google login 
@@ -180,6 +184,7 @@ def microsoft_callback():
 
 # Manual Authentication
 @app.route('/auth/signup', methods=['POST'])
+# @cross_origin(origins='http://localhost:3000/signup')
 def register():
     first_name = request.json.get('first_name')
     last_name = request.json.get('last_name')
@@ -187,6 +192,8 @@ def register():
     phone = request.json.get('phone')
     email = request.json.get('email')
     password = request.json.get('password')
+
+    print("received")
 
     if not (first_name and last_name and country_code and phone and email and password):
         return jsonify({'message': 'Missing required fields'}), 400
@@ -254,6 +261,8 @@ def process():
 
 
 app.config['UPLOAD_FOLDER'] = 'files'
+
+
 @app.route('/career', methods=['POST'])
 def carrer():
     if request.method == "POST":
@@ -266,7 +275,7 @@ def carrer():
         socials = json.loads(socials_json) if socials_json else {}
         all_questions = request.form.get("allQuestions")
         voluntary_questions = request.form.get("voluntaryDisclosures")
-        #print(applied_for,personal,experiences,education,skills,socials_json,socials,all_questions,voluntary_questions)
+        # print(applied_for,personal,experiences,education,skills,socials_json,socials,all_questions,voluntary_questions)
 
         # ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'}
         # certificates = request.files.getlist("certificates[]")
@@ -300,7 +309,7 @@ def carrer():
             'socials': socials,
             'all_questions': all_questions,
             'voluntary_questions': voluntary_questions,
-           # 'certificates': certificate_paths
+            # 'certificates': certificate_paths
         })
         print(client)
         return jsonify({'message': 'Application submitted successfully'}), 201
@@ -595,4 +604,4 @@ def refresh_token():
 
 '''
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)#, host='127.0.0.2')
