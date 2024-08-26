@@ -26,7 +26,6 @@ from flask_mail import Mail ,Message
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
-
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.secret_key = os.urandom(12)
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
@@ -367,7 +366,7 @@ def healtyDishes():
             #Inde.append(str(int(it['quantity'])//(already_person))*people) +" " + it['unit'])
         return jsonify({"Kitchen_equi":Dish_detail['kitchen_equipments'].split(","),"Indegrients":Inde}),201
     
-@app.route('/userDetials',methods =['GET','POST'])
+@app.route('/userDetails',methods =['GET','POST'])
 @jwt_required()
 def  userDetials():
     temp = get_jwt_identity()
@@ -396,6 +395,7 @@ def create_id():
     return jsonify({"message":"chef id created succesffuly"}),200
 
 @app.route('/api/saveMenu',methods =['GET','POST'])
+@jwt_required()
 def saveMenu():
     user_email = get_jwt_identity()
     user =db.User.find_one({'email':user_email})
@@ -418,7 +418,7 @@ def saveMenu():
     cuisine = data['cuisine']
     desserts = data['desserts']
     appetizers = data['appetizers']
-    
+    reminder_datetime = datetime.fromisoformat(reminder)
     if meal =='dinner':
         db.Menu.insert_one({
             'meal':meal,
@@ -454,25 +454,39 @@ def saveMenu():
             'cuisine':cuisine
         })
 
-    reminder_time = reminder -timedelta(minutes =10)
+    reminder_time = reminder_datetime - timedelta(minutes=10)
+    job_id = f'reminder_{user_email}_{reminder_datetime.isoformat()}'
     scheduler.add_job(
-        id ='reminder',
+        id =job_id,
         func= send_reminder,
         args = [user_email,meal,mainDishes,reminder],
         trigger = 'date',
         run_date = reminder_time
     )
+    print("rem")
+    print(send_reminder)
     return jsonify({'Message':"Menu saved successfully "}),201
 
 def send_reminder(user_email,meal,mainDishes,reminder):
+    print("1")
     msg = Message(
         'Hello',
-        sender = os.getenv('YOUR_EMAIL_ADDRESS'),
-        recipients =[user_email]
-
+        sender=os.getenv('YOUR_EMAIL_ADDRESS'),
+        recipients=[user_email]
     )
-    msg.body =f"Your Dish {meal} with main Dishes {mainDishes} is ready to cook in {reminder} minutes"
-    mail.send(msg)
+    print("2")
+    msg.body = f"Your Dish {meal} with main dishes {mainDishes} is ready to cook in {reminder} minutes"
+    print("msg_body")
+    print(msg.body)
+    
+    try:
+        print("3")
+        mail.send(msg)
+        print("4")
+        logging.info(f"Email successfully sent to {user_email}")
+    except Exception as e:
+        print("5")
+        logging.error(f"Failed to send email to {user_email}: {str(e)}")
 
 # pipeline of data
 '''
